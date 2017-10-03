@@ -33,15 +33,16 @@
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"/>
 		<property name="configLocation" value="classpath:mybatis-config.xml"/>
-		<property name="mapperLocations" value="com/bcubbo/dao/*.xml"/>
+		<!-- <property name="mapperLocations" value="com/bcubbo/dao/*.xml"/> -->
 	</bean>
-	<!-- 配置sqlSessionTemplate 使用构造方法进行sqlSessionFactory的注入-->
-	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	<!-- 使用MapperFactoryBean,dao配置 -->
+	<bean id="employeeMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.bcubbo.dao.EmployeeMapper"/>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
 	</bean>
-	<!-- 将sqlSessionTemplate注入到测试类中 -->
-	 <bean id="employeeDaoTest" class="com.bcubbo.test.EmployeeDaoTest">
-	 	<property name="sqlSessionTemplate" ref="sqlSessionTemplate"/>
-	 </bean>
+	<bean id="employeeService" class="com.bcubbo.service.impl.EmployeeServiceImpl">
+		<property name="employeeMapper" ref="employeeMapper"/>
+	</bean>
+	
  
  </beans>

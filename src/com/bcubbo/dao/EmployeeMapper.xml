@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"D:\JARPack\SSMJAR\dtd\mybatis-3-mapper.dtd"
+>
+<mapper namespace="com.bcubbo.dao.EmployeeMapper">
+	<select id="getEmployeeList" resultType="Employee">
+		select * from employee
+	</select>
+	<insert id="add" parameterType="Employee">
+		insert into employee (sn,name,gender) values(#{sn},#{name},#{gender})
+	</insert>
+	
+	<resultMap type="Employee" id="employeeResult">
+		<result property="id" column="id"/>
+		<result property="sn" column="sn"/>
+		<result property="name" column="name"/>
+		<result property="depName" column="depName"/>
+	</resultMap>
+	
+	<select id="getEmployeeListByDepId" parameterType="Department" resultMap="employeeResult">
+		select e.*,d.depName as depName from employee e,department d 
+		where e.depId = d.id and e.depId=#{id}
+	</select>
+	
+	
+	<select id="getEmployeeByDepId" parameterType="Employee" resultMap="employeeResult">
+		select e.*,d.depName as depName from employee e,department d
+		where e.depId = d.id and e.id=#{id}
+	</select>
+	
+</mapper>
